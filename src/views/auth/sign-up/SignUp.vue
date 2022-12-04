@@ -32,19 +32,19 @@
                 />
               </div>
               <div class="auth-field mb-3 col-6">
-                <label class="auth-label form-label" for="first_name">
-                  Second Name
+                <label class="auth-label form-label" for="last_name">
+                  Last Name
                 </label>
                 <vee-field
-                  id="second_name"
-                  name="second_name"
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   class="auth-input form-control"
                   placeholder="Ex. Mike"
                 />
                 <error-message
                   class="text-danger mt-2 d-block error-msg"
-                  name="second_name"
+                  name="last_name"
                 />
               </div>
               <div class="auth-field mb-3 col-12">
@@ -93,6 +93,19 @@
                   name="confirm_password"
                 />
               </div>
+              <div class="mb-3 pl-6">
+                <vee-field
+                  id="terms"
+                  type="checkbox"
+                  name="terms"
+                  class="form-check-input"
+                  value="1"
+                />
+                <label class="form-check-label ms-2" for="terms">
+                  Accept terms of service
+                </label>
+                <error-message class="text-danger d-block" name="terms" />
+              </div>
               <div class="text-center">
                 <button class="btn btn-dark auth-submit" type="submit">
                   Sign up
@@ -122,10 +135,11 @@ export default {
     return {
       schema: {
         first_name: "required|alpha_spaces|min:4|max:100",
-        second_name: "required|alpha_spaces|min:4|max:100",
+        last_name: "required|alpha_spaces|min:4|max:100",
         email: "required|min:3|max:100|email",
         password: "required|min:9|max:100",
         confirm_password: "required|confirmed:@password",
+        terms: "required",
       },
       onErr: false,
     };
@@ -134,7 +148,10 @@ export default {
     ...mapActions(useUserStore, ["signUpUser"]),
 
     async register(formData) {
-      const response = await this.signUpUser(formData);
+      const { first_name, last_name, email } = formData;
+      const data = { first_name, last_name, email };
+
+      const response = await this.signUpUser(data);
 
       // Navigate to home page if success
       if (response) this.$router.push("/");
