@@ -41,10 +41,8 @@
               New Activity
             </RouterLink>
           </li>
-          <li class="nav-item ms-2">
+          <li class="nav-item ms-auto d-flex">
             <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
-          </li>
-          <li class="nav-item ms-auto">
             <RouterLink
               class="nav-link"
               to="/auth/sign-in"

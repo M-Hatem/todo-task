@@ -11,8 +11,6 @@ const signUpView = () => import("../views/auth/sign-up/SignUp.vue");
 
 // To-Do List (Activities)
 const activitiesView = () => import("../views/activities/Activities.vue");
-const addActivityView = () => import("../views/activities/Add-activity.vue");
-const editActivityView = () => import("../views/activities/Edit-activity.vue");
 
 const routes = [
   {
@@ -24,16 +22,6 @@ const routes = [
         path: "todo-list",
         name: "list",
         component: activitiesView,
-      },
-      {
-        path: "add-new",
-        name: "new",
-        component: addActivityView,
-      },
-      {
-        path: "edit/:id",
-        name: "edit",
-        component: editActivityView,
       },
     ],
   },
