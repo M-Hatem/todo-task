@@ -12,6 +12,9 @@ const signUpView = () => import("../views/auth/sign-up/SignUp.vue");
 // To-Do List (Activities)
 const activitiesView = () => import("../views/activities/Activities.vue");
 
+// Not-found component
+const NotFoundView = () => import("../views/Not-found.vue");
+
 const routes = [
   {
     path: "/",
@@ -47,7 +50,7 @@ const routes = [
   },
   {
     path: "/:catchAll(.*)*",
-    redirect: { name: "home" },
+    component: NotFoundView,
   },
 ];
 
