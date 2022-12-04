@@ -24,7 +24,22 @@
       <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex">
           <li class="nav-item ms-2">
-            <a class="nav-link" v-if="userStore.userLoggedIn"> New Activity </a>
+            <RouterLink
+              class="nav-link"
+              :to="{ name: 'list' }"
+              v-if="userStore.userLoggedIn"
+            >
+              My List
+            </RouterLink>
+          </li>
+          <li class="nav-item ms-2">
+            <RouterLink
+              class="nav-link"
+              :to="{ name: 'new' }"
+              v-if="userStore.userLoggedIn"
+            >
+              New Activity
+            </RouterLink>
           </li>
           <li class="nav-item ms-2">
             <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
@@ -61,12 +76,6 @@ export default {
       this.userStore.signOutUser();
     },
   },
-  // methods: {
-  //   ...mapActions(useUserStore, ["signOutUser"]),
-  //   signOut() {
-  //     signOutUser();
-  //   },
-  // },
 };
 </script>
 
