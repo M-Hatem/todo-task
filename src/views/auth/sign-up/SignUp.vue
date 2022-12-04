@@ -9,7 +9,11 @@
           <div class="my-2 alert alert-danger text-center" v-if="onErr">
             Something went wrong! Try again later.
           </div>
-          <vee-form class="auth-form mb-4" :validation-schema="schema">
+          <vee-form
+            class="auth-form mb-4"
+            :validation-schema="schema"
+            @submit="register"
+          >
             <div class="row">
               <div class="auth-field mb-3 col-6">
                 <label class="auth-label form-label" for="first_name">
@@ -108,18 +112,38 @@
 </template>
 
 <script>
+import { mapActions } from "pinia";
+
+import useUserStore from "@/stores/user";
+
 export default {
   name: "SignUp",
   data() {
     return {
       schema: {
-        first_name: "required|alpha_spaces|min:5|max:100",
-        second_name: "required|alpha_spaces|min:5|max:100",
+        first_name: "required|alpha_spaces|min:4|max:100",
+        second_name: "required|alpha_spaces|min:4|max:100",
         email: "required|min:3|max:100|email",
         password: "required|min:9|max:100",
         confirm_password: "required|confirmed:@password",
       },
+      onErr: false,
     };
+  },
+  methods: {
+    ...mapActions(useUserStore, ["signUpUser"]),
+
+    async register(formData) {
+      const response = await this.signUpUser(formData);
+
+      // Navigate to home page if success
+      if (response) this.$router.push("/");
+      else {
+        // reset form and show an error message
+        this.onErr = true;
+        resetForm();
+      }
+    },
   },
 };
 </script>

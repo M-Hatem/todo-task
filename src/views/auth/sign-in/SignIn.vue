@@ -23,7 +23,10 @@
                 class="auth-input form-control"
                 placeholder="Ex. mike@company.com"
               />
-              <error-message class="text-danger mt-2 d-block" name="email" />
+              <error-message
+                class="text-danger mt-2 d-block error-msg"
+                name="email"
+              />
             </div>
             <div class="auth-field mb-4">
               <label class="auth-label form-label" for="password">
@@ -36,7 +39,10 @@
                 class="auth-input form-control"
                 placeholder="Your Password here"
               />
-              <error-message class="text-danger mt-2 d-block" name="password" />
+              <error-message
+                class="text-danger mt-2 d-block error-msg"
+                name="password"
+              />
             </div>
             <div class="text-center">
               <button class="btn btn-dark auth-submit" type="submit">
@@ -80,8 +86,10 @@ export default {
     async logIn(_, { resetForm }) {
       const response = await this.signInUser();
 
+      // Navigate to home page if success
       if (response) this.$router.push("/");
       else {
+        // else reset the form and show an error message
         this.onErr = true;
         resetForm();
       }
@@ -108,6 +116,10 @@ export default {
       &::placeholder {
         color: transparent;
       }
+    }
+
+    .error-msg {
+      font-size: 13px;
     }
   }
 }

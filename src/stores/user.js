@@ -3,9 +3,12 @@ import { defineStore } from "pinia";
 export default defineStore("user", {
   state: () => ({
     userLoggedIn: false,
+    // Current user
     user: {},
   }),
+
   actions: {
+    // To sign in user
     async signInUser() {
       const response = await fetch("https://reqres.in/api/users/1");
       const res = await response.json();
@@ -19,6 +22,28 @@ export default defineStore("user", {
 
       return false;
     },
+
+    // To sign up user
+    async signUpUser(formData) {
+      const response = await fetch("https://reqres.in/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (data.id) {
+        this.userLoggedIn = true;
+        this.user = data;
+        return true;
+      }
+
+      return false;
+    },
+
+    // To sign out the user
     signOutUser() {
       this.userLoggedIn = false;
       this.user = {};
