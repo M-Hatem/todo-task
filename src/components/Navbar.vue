@@ -23,8 +23,11 @@
       </button>
       <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex">
-          <li class="nav-item">
-            <a href="#" class="nav-link">Manage</a>
+          <li class="nav-item ms-2">
+            <a class="nav-link" v-if="userStore.userLoggedIn"> New Activity </a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
           </li>
           <li class="nav-item ms-auto">
             <RouterLink
@@ -34,9 +37,7 @@
             >
               Sign In / Sign Up
             </RouterLink>
-            <a class="nav-link" href="#" @click.prevent="signOut" v-else>
-              Sign Out
-            </a>
+            <a class="nav-link" @click.prevent="signOut" v-else> Sign Out </a>
           </li>
         </ul>
       </div>
