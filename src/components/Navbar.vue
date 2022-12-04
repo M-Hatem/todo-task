@@ -32,15 +32,6 @@
               My List
             </RouterLink>
           </li>
-          <li class="nav-item ms-2">
-            <RouterLink
-              class="nav-link"
-              :to="{ name: 'new' }"
-              v-if="userStore.userLoggedIn"
-            >
-              New Activity
-            </RouterLink>
-          </li>
           <li class="nav-item ms-auto d-flex">
             <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
             <RouterLink

@@ -9,6 +9,7 @@
               v-for="activity of activities"
               :activity="activity"
               :key="activity.id"
+              @refreshList="removeActivity"
             />
           </div>
         </div>
@@ -22,8 +23,9 @@ import Activity from "@/components/Activity.vue";
 
 import axios from "axios";
 
-import { mapState } from "pinia";
+import { mapState, mapWritableState } from "pinia";
 import useUserStore from "@/stores/user";
+import useListStore from "@/stores/list";
 
 export default {
   name: "Activities",
@@ -37,15 +39,33 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ["user"]),
+    ...mapWritableState(useListStore, ["list"]),
+  },
+  methods: {
+    async getAllList() {
+      if (!this.list.length) {
+        axios
+          .get(
+            `https://jsonplaceholder.typicode.com/todos?userId=${this.user.id}`
+          )
+          .then((response) => {
+            const { data: activities } = response;
+            this.activities = activities;
+            this.list = activities;
+          });
+      } else {
+        this.activities = this.list;
+      }
+    },
+
+    // To remove an activity from the list
+    removeActivity(activity) {
+      this.activities = this.activities.filter((l) => l.id !== activity.id);
+      this.list = this.activities;
+    },
   },
   created() {
-    axios.get("https://jsonplaceholder.typicode.com/todos").then((response) => {
-      const { data: activities } = response;
-      this.activities = activities.filter(
-        (list) => list.userId === this.user.id
-      );
-      console.log(this.activities);
-    });
+    this.getAllList();
   },
 };
 </script>

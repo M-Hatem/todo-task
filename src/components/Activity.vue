@@ -10,7 +10,10 @@
       <button class="btn btn-secondary me-2">
         <i class="fa-solid fa-pen-to-square"></i>
       </button>
-      <button class="delete-btn btn btn-danger">
+      <button
+        class="delete-btn btn btn-danger"
+        @click.stop.prevent="deleteActivity"
+      >
         <i class="fa-solid fa-trash"></i>
       </button>
     </div>
@@ -18,9 +21,26 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Activity",
   props: ["activity"],
+  methods: {
+    deleteActivity() {
+      axios
+        .delete(
+          `https://jsonplaceholder.typicode.com/todos/${this.activity.id}`
+        )
+        .then((res) => {
+          const { status } = res;
+
+          if (status === 200) {
+            this.$emit("refreshList", this.activity);
+          }
+        });
+    },
+  },
 };
 </script>
 
