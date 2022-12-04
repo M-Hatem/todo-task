@@ -47,7 +47,7 @@
           <p class="register text-center">
             Don't have an account?
             <br />
-            <RouterLink to="/auth/sign-up">Register here</RouterLink>
+            <RouterLink to="/auth/sign-up">Register</RouterLink>
           </p>
         </div>
       </div>

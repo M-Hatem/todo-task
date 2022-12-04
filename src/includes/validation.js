@@ -26,6 +26,7 @@ export default {
     defineRule("max", max);
     defineRule("alpha_spaces", alphaSpaces);
     defineRule("tos", required);
+    defineRule("confirmed", confirmed);
 
     configure({
       generateMessage: (ctx) => {
