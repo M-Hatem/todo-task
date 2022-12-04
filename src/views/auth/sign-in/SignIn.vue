@@ -6,7 +6,14 @@
           class="col-10 col-md-6 col-lg-5 col-xl-4 p-5 bg-white auth-container"
         >
           <h3 class="auth-title text-center mb-4">Sign In</h3>
-          <vee-form class="auth-form mb-4" :validation-schema="schema">
+          <div class="my-2 alert alert-danger text-center" v-if="onErr">
+            Something went wrong! Try again later.
+          </div>
+          <vee-form
+            class="auth-form mb-4"
+            :validation-schema="schema"
+            @submit="logIn"
+          >
             <div class="auth-field mb-3">
               <label class="auth-label form-label" for="email">Email</label>
               <vee-field
@@ -16,20 +23,20 @@
                 class="auth-input form-control"
                 placeholder="Ex. mike@company.com"
               />
-              <error-message class="text-danger" name="email" />
+              <error-message class="text-danger mt-2 d-block" name="email" />
             </div>
             <div class="auth-field mb-4">
               <label class="auth-label form-label" for="password">
                 Password
               </label>
-              <input
+              <vee-field
                 id="password"
                 name="password"
                 type="password"
                 class="auth-input form-control"
                 placeholder="Your Password here"
               />
-              <error-message class="text-danger" name="password" />
+              <error-message class="text-danger mt-2 d-block" name="password" />
             </div>
             <div class="text-center">
               <button class="btn btn-dark auth-submit" type="submit">
@@ -49,17 +56,36 @@
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import useUserStore from "@/stores/user";
+
 import { RouterLink } from "vue-router";
 
 export default {
   name: "SignIn",
   data() {
     return {
+      onErr: false,
       schema: {
         email: "required|min:3|max:100|email",
         password: "required|min:9|max:100",
       },
     };
+  },
+  methods: {
+    ...mapActions(useUserStore, {
+      signInUser: "signInUser",
+    }),
+
+    async logIn(_, { resetForm }) {
+      const response = await this.signInUser();
+
+      if (response) this.$router.push("/");
+      else {
+        this.onErr = true;
+        resetForm();
+      }
+    },
   },
 };
 </script>
