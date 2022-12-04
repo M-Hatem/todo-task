@@ -5,12 +5,14 @@
         <div class="activities-container col-lg-8 col-12 py-4 px-5 my-5">
           <h1 class="activities-title text-center mb-5">To-Do List</h1>
           <AddNewActivity @addNew="addActivity" />
-          <div class="list-group">
+          <Spinner v-if="isLoading" />
+          <div class="list-group" v-else>
             <Activity
               v-for="activity of activities"
               :activity="activity"
               :key="activity.id"
               @refreshList="removeActivity"
+              @saveData="saveData"
             />
           </div>
         </div>
@@ -22,6 +24,7 @@
 <script>
 import Activity from "@/components/Activity.vue";
 import AddNewActivity from "@/components/Add-activity.vue";
+import Spinner from "@/components/Spinner.vue";
 
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -35,10 +38,12 @@ export default {
   components: {
     Activity,
     AddNewActivity,
+    Spinner,
   },
   data() {
     return {
       activities: {},
+      isLoading: true,
     };
   },
   computed: {
@@ -46,8 +51,8 @@ export default {
     ...mapWritableState(useListStore, ["list"]),
   },
   methods: {
-    async getAllList() {
-      if (!this.list.length) {
+    getAllList() {
+      if (!localStorage.getItem("list")) {
         axios
           .get(
             `https://jsonplaceholder.typicode.com/todos?userId=${this.user.id}`
@@ -56,9 +61,13 @@ export default {
             const { data: activities } = response;
             this.activities = activities.sort((a, b) => (a.id > b.id ? -1 : 1));
             this.list = this.activities;
+            localStorage.setItem("list", JSON.stringify(this.list));
+            this.isLoading = false;
           });
       } else {
+        this.list = JSON.parse(localStorage.getItem("list"));
         this.activities = this.list;
+        this.isLoading = false;
       }
     },
 
@@ -87,12 +96,17 @@ export default {
         id: this.activities[0].id + 1,
         title: "",
       });
-
       this.list = this.activities;
+    },
+    saveData() {
+      localStorage.setItem("list", JSON.stringify(this.list));
     },
   },
   created() {
     this.getAllList();
+  },
+  updated() {
+    this.saveData();
   },
 };
 </script>

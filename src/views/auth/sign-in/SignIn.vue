@@ -54,6 +54,8 @@
             Don't have an account?
             <br />
             <RouterLink to="/auth/sign-up">Register</RouterLink>
+            |
+            <RouterLink to="/">Home</RouterLink>
           </p>
         </div>
       </div>

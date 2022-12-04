@@ -33,6 +33,11 @@
             </RouterLink>
           </li>
           <li class="nav-item ms-lg-auto d-flex">
+            <img
+              src="../assets/default-pic.svg"
+              class="rounded-circle"
+              v-if="userStore.userLoggedIn"
+            />
             <RouterLink
               class="nav-link"
               to="/auth/sign-in"
@@ -40,7 +45,7 @@
             >
               Sign In / Sign Up
             </RouterLink>
-            <a href="#" class="nav-link" @click.prevent="signOut" v-else>
+            <a class="nav-link" @click.stop.prevent="signOut" v-else>
               Sign Out
             </a>
           </li>
@@ -64,7 +69,7 @@ export default {
   methods: {
     signOut() {
       this.userStore.signOutUser();
-      this.$router.push("/auth/sign-in");
+      this.$router.push("/");
     },
   },
 };
@@ -74,6 +79,10 @@ export default {
 nav {
   .home-icon {
     width: 30px;
+  }
+
+  .nav-link {
+    cursor: pointer;
   }
 }
 </style>

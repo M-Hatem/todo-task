@@ -1,7 +1,7 @@
 <template>
   <a
     href="#"
-    class="list-group-item list-group-item-action text-md-center d-flex justify-content-center align-items-center"
+    class="list-group-item list-group-item-action d-flex justify-content-center align-items-center"
     :class="{ 'activity-done': activity.completed }"
     @click.prevent="activity.completed = !activity.completed"
   >
@@ -21,11 +21,11 @@
         <i class="fa-solid fa-pen-to-square"></i>
       </button>
       <button
-        class="btn btn-secondary me-2"
+        class="btn btn-success me-2"
         v-else
         @click.stop.prevent="saveActivity"
       >
-        <i class="fa-solid fa-thumbs-up"></i>
+        <i class="fa-solid fa-floppy-disk"></i>
       </button>
       <button
         class="delete-btn btn btn-danger"
@@ -113,8 +113,11 @@ export default {
     },
   },
 
-  updated() {
+  mounted() {
     !this.activity.title ? (this.editMode = true) : "";
+  },
+  updated() {
+    this.$emit("saveData");
   },
 };
 </script>

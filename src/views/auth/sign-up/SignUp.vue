@@ -117,6 +117,8 @@
             Already have an account?
             <br />
             <RouterLink to="/auth/sign-in">Sign in</RouterLink>
+            |
+            <RouterLink to="/">Home</RouterLink>
           </p>
         </div>
       </div>
