@@ -23,7 +23,7 @@
       </button>
       <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex">
-          <li class="nav-item ms-2">
+          <li class="nav-item ms-lg-2">
             <RouterLink
               class="nav-link"
               :to="{ name: 'list' }"
@@ -32,8 +32,7 @@
               My List
             </RouterLink>
           </li>
-          <li class="nav-item ms-auto d-flex">
-            <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
+          <li class="nav-item ms-lg-auto d-flex">
             <RouterLink
               class="nav-link"
               to="/auth/sign-in"

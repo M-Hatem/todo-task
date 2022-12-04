@@ -8,6 +8,7 @@ import VeeValidationPlugin from "./includes/validation";
 
 // To include bootstrap library
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min";
 // To import main.css file
 import "./assets/main.css";
 
