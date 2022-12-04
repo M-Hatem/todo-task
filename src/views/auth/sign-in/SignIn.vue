@@ -7,7 +7,7 @@
         >
           <h3 class="auth-title text-center mb-4">Sign In</h3>
           <div class="my-2 alert alert-danger text-center" v-if="onErr">
-            Something went wrong! Try again later.
+            Wrong Email or Password! Try again.
           </div>
           <vee-form
             class="auth-form mb-4"
@@ -83,8 +83,8 @@ export default {
       signInUser: "signInUser",
     }),
 
-    async logIn(_, { resetForm }) {
-      const response = await this.signInUser();
+    async logIn(formData, { resetForm }) {
+      const response = await this.signInUser(formData);
 
       // Navigate to home page if success
       if (response) this.$router.push("/todo-list");

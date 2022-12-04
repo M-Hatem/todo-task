@@ -2,20 +2,40 @@ import { defineStore } from "pinia";
 
 export default defineStore("user", {
   state: () => ({
-    userLoggedIn: false,
+    userLoggedIn: localStorage.getItem("token") ? true : false,
     // Current user
     user: {},
   }),
 
   actions: {
     // To sign in user
-    async signInUser() {
-      const response = await fetch("https://reqres.in/api/users/1");
-      const res = await response.json();
-      const { data: user } = res;
+    async signInUser(formData) {
+      const { email } = formData;
 
-      if (user?.id) {
+      const response = await fetch("https://reqres.in/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+        }),
+      });
+      const res = await response.json();
+
+      const { token } = res;
+      const user = {
+        // default value because api doesn't return an id for the user when logging in
+        id: 4,
+
+        email,
+        avatar: "../assets/default-pic.svg",
+      };
+
+      if (token) {
         this.userLoggedIn = true;
+        localStorage.setItem("token", token);
+
         this.user = user;
         return true;
       }
@@ -25,23 +45,31 @@ export default defineStore("user", {
 
     // To sign up user
     async signUpUser(formData) {
-      const response = await fetch("https://reqres.in/api/users", {
+      const { email, password } = formData;
+      const response = await fetch("https://reqres.in/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
-          avatar: "../assets/default-pic.svg",
+          email,
+          password,
         }),
       });
       const data = await response.json();
+      const { id, token } = data;
 
-      console.log(data);
+      const user = {
+        id,
+        email,
+        avatar: "../assets/default-pic.svg",
+      };
 
-      if (data.id) {
+      if (token) {
         this.userLoggedIn = true;
-        this.user = data;
+        localStorage.setItem("token", token);
+
+        this.user = user;
         return true;
       }
 
@@ -52,6 +80,7 @@ export default defineStore("user", {
     signOutUser() {
       this.userLoggedIn = false;
       this.user = {};
+      localStorage.clear();
     },
   },
 });

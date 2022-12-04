@@ -7,7 +7,7 @@
         >
           <h3 class="auth-title text-center mb-3">Sign Up</h3>
           <div class="my-2 alert alert-danger text-center" v-if="onErr">
-            Something went wrong! Try again later.
+            Note: Only defined users succeed registration.
           </div>
           <vee-form
             class="auth-form mb-4"
@@ -147,11 +147,8 @@ export default {
   methods: {
     ...mapActions(useUserStore, ["signUpUser"]),
 
-    async register(formData) {
-      const { first_name, last_name, email } = formData;
-      const data = { first_name, last_name, email };
-
-      const response = await this.signUpUser(data);
+    async register(formData, { resetForm }) {
+      const response = await this.signUpUser(formData);
 
       // Navigate to home page if success
       if (response) this.$router.push("/");

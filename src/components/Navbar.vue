@@ -40,7 +40,9 @@
             >
               Sign In / Sign Up
             </RouterLink>
-            <a class="nav-link" @click.prevent="signOut" v-else> Sign Out </a>
+            <a href="#" class="nav-link" @click.prevent="signOut" v-else>
+              Sign Out
+            </a>
           </li>
         </ul>
       </div>
