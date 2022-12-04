@@ -10,6 +10,7 @@
               :activity="activity"
               :key="activity.id"
               @refreshList="removeActivity"
+              @editActivity=""
             />
           </div>
         </div>
@@ -50,8 +51,8 @@ export default {
           )
           .then((response) => {
             const { data: activities } = response;
-            this.activities = activities;
-            this.list = activities;
+            this.activities = activities.sort((a, b) => (a.id > b.id ? -1 : 1));
+            this.list = this.activities;
           });
       } else {
         this.activities = this.list;
@@ -61,6 +62,16 @@ export default {
     // To remove an activity from the list
     removeActivity(activity) {
       this.activities = this.activities.filter((l) => l.id !== activity.id);
+      this.list = this.activities;
+    },
+
+    // To edit current activity
+    saveActivity(newActivity) {
+      this.activities = this.activities.forEach((l) => {
+        if (newActivity.id === l.id) {
+          l = { ...newActivity };
+        }
+      });
       this.list = this.activities;
     },
   },

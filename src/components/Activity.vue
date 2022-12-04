@@ -5,10 +5,27 @@
     :class="{ 'activity-done': activity.completed }"
     @click.prevent="activity.completed = !activity.completed"
   >
-    <span>{{ activity.title }}</span>
+    <span v-if="!editMode">{{ activity.title }}</span>
+    <input
+      type="text"
+      class="form-control w-100 me-3"
+      v-model="activity.title"
+      v-else
+    />
     <div class="d-flex ms-auto">
-      <button class="btn btn-secondary me-2">
+      <button
+        class="btn btn-secondary me-2"
+        v-if="!editMode"
+        @click.stop.prevent="editActivity"
+      >
         <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+      <button
+        class="btn btn-secondary me-2"
+        v-else
+        @click.stop.prevent="saveActivity"
+      >
+        <i class="fa-solid fa-thumbs-up"></i>
       </button>
       <button
         class="delete-btn btn btn-danger"
@@ -23,22 +40,72 @@
 <script>
 import axios from "axios";
 
+// To import sweetalert
+import Swal from "sweetalert2";
+
 export default {
   name: "Activity",
+  data() {
+    return {
+      editMode: false,
+    };
+  },
   props: ["activity"],
   methods: {
     deleteActivity() {
-      axios
-        .delete(
-          `https://jsonplaceholder.typicode.com/todos/${this.activity.id}`
-        )
-        .then((res) => {
-          const { status } = res;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(
+              `https://jsonplaceholder.typicode.com/todos/${this.activity.id}`
+            )
+            .then((res) => {
+              const { status } = res;
 
-          if (status === 200) {
-            this.$emit("refreshList", this.activity);
-          }
-        });
+              if (status === 200) {
+                this.$emit("refreshList", this.activity);
+              }
+            });
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your item has been deleted",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+      });
+    },
+    // To start editing
+    editActivity() {
+      this.editMode = true;
+    },
+    // To save editing
+    saveActivity() {
+      this.activity.completed = false;
+
+      const editedActivity = {
+        ...this.activity,
+      };
+      this.$emit("editActivity", editedActivity);
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Your item has been saved",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+
+      this.editMode = false;
     },
   },
 };
