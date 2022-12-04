@@ -90,12 +90,16 @@ export default {
     },
     // To save editing
     saveActivity() {
-      this.activity.completed = false;
+      if (!this.activity.title) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You must fill the input first!",
+        });
+        return;
+      }
 
-      const editedActivity = {
-        ...this.activity,
-      };
-      this.$emit("editActivity", editedActivity);
+      this.activity.completed = false;
 
       Swal.fire({
         position: "center",
@@ -107,6 +111,10 @@ export default {
 
       this.editMode = false;
     },
+  },
+
+  updated() {
+    !this.activity.title ? (this.editMode = true) : "";
   },
 };
 </script>

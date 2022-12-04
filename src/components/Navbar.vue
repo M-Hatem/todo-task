@@ -63,6 +63,7 @@ export default {
   methods: {
     signOut() {
       this.userStore.signOutUser();
+      this.$router.push("/auth/sign-in");
     },
   },
 };

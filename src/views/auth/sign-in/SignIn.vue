@@ -87,7 +87,7 @@ export default {
       const response = await this.signInUser();
 
       // Navigate to home page if success
-      if (response) this.$router.push("/");
+      if (response) this.$router.push("/todo-list");
       else {
         // else reset the form and show an error message
         this.onErr = true;
