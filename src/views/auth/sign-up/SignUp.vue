@@ -136,10 +136,10 @@ export default {
   data() {
     return {
       schema: {
-        first_name: "required|alpha_spaces|min:4|max:100",
-        last_name: "required|alpha_spaces|min:4|max:100",
+        first_name: "required|alpha_spaces|min:4|max:20",
+        last_name: "required|alpha_spaces|min:4|max:20",
         email: "required|min:3|max:100|email",
-        password: "required|min:9|max:100",
+        password: "required|min:9|max:20",
         confirm_password: "required|confirmed:@password",
         terms: "required",
       },

@@ -4,15 +4,21 @@
       <div class="row justify-content-center">
         <div class="activities-container col-lg-8 col-12 py-4 px-5 my-5">
           <h1 class="activities-title text-center mb-5">To-Do List</h1>
+          <!-- Search input component -->
           <SearchInput @search="searchValue" />
+          <!-- Sort box component -->
           <SortBox @sort="sort" />
+          <!-- Add new Activity Button component -->
           <AddNewActivity @addNew="addActivity" />
+          <!-- Spinner component -->
           <Spinner v-if="isLoading" />
           <div class="list-group" v-else>
+            <!-- Single Activity component -->
             <Activity
-              v-for="activity of activities"
+              v-for="(activity, i) of activities"
               :activity="activity"
               :key="activity.id"
+              :index="i"
               @refreshList="removeActivity"
               @saveData="saveData"
             />
@@ -57,6 +63,7 @@ export default {
     ...mapWritableState(useListStore, ["list"]),
   },
   methods: {
+    // to get all list
     getAllList() {
       if (!localStorage.getItem("list")) {
         axios
