@@ -23,10 +23,17 @@
       </button>
       <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex">
-          <li class="nav-item">
-            <a href="#" class="nav-link">Manage</a>
+          <li class="nav-item ms-2">
+            <RouterLink
+              class="nav-link"
+              :to="{ name: 'list' }"
+              v-if="userStore.userLoggedIn"
+            >
+              My List
+            </RouterLink>
           </li>
-          <li class="nav-item ms-auto">
+          <li class="nav-item ms-auto d-flex">
+            <a class="nav-link" v-if="userStore.userLoggedIn"> Manage </a>
             <RouterLink
               class="nav-link"
               to="/auth/sign-in"
@@ -34,9 +41,7 @@
             >
               Sign In / Sign Up
             </RouterLink>
-            <a class="nav-link" href="#" @click.prevent="signOut" v-else>
-              Sign Out
-            </a>
+            <a class="nav-link" @click.prevent="signOut" v-else> Sign Out </a>
           </li>
         </ul>
       </div>
@@ -58,14 +63,9 @@ export default {
   methods: {
     signOut() {
       this.userStore.signOutUser();
+      this.$router.push("/auth/sign-in");
     },
   },
-  // methods: {
-  //   ...mapActions(useUserStore, ["signOutUser"]),
-  //   signOut() {
-  //     signOutUser();
-  //   },
-  // },
 };
 </script>
 
