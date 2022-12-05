@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import useUserStore from "@/stores/user";
 
 // Components
-// import Home from '../views/HomeView'
 const homeView = () => import("../views/Home.vue");
+const MainView = () => import("../views/Main-page.vue");
 
 // Authentication
 const authView = () => import("../views/auth/Auth.vue");
@@ -22,6 +22,10 @@ const routes = [
     name: "home",
     component: homeView,
     children: [
+      {
+        path: "",
+        component: MainView,
+      },
       {
         path: "todo-list",
         name: "list",
