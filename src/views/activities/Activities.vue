@@ -4,18 +4,32 @@
       <div class="row justify-content-center">
         <div class="activities-container col-lg-8 col-12 py-4 px-5 my-5">
           <h1 class="activities-title text-center mb-5">To-Do List</h1>
+          <!-- Search Input -->
           <SearchInput @search="searchValue" />
+          <!-- Sort Box -->
           <SortBox @sort="sort" />
+          <!-- Add button component -->
           <AddNewActivity @addNew="addActivity" />
+          <!-- Spinner component -->
           <Spinner v-if="isLoading" />
           <div class="list-group" v-else>
+            <!-- Single Activity component -->
             <Activity
-              v-for="activity of activities"
+              v-for="(activity, i) of activities"
               :activity="activity"
               :key="activity.id"
+              :index="i"
               @refreshList="removeActivity"
               @saveData="saveData"
             />
+            <!-- Pagination -->
+            <!-- <div class="d-flex justify-content-center mt-4">
+              <Paginator
+                v-model:rows="rows"
+                :totalRecords="totalActivities"
+                :rowsPerPageOptions="[5, 15, 25]"
+              ></Paginator>
+            </div> -->
           </div>
         </div>
       </div>
@@ -32,6 +46,7 @@ import SortBox from "../../components/Sort-box.vue";
 
 import axios from "axios";
 import Swal from "sweetalert2";
+// import Paginator from "primevue/paginator";
 
 import { mapState, mapWritableState } from "pinia";
 import useUserStore from "@/stores/user";
@@ -45,11 +60,14 @@ export default {
     Spinner,
     SearchInput,
     SortBox,
+    // Paginator,
   },
   data() {
     return {
-      activities: {},
+      activities: [],
       isLoading: true,
+      // rows: 5,
+      // totalActivities: 0,
     };
   },
   computed: {
@@ -57,6 +75,7 @@ export default {
     ...mapWritableState(useListStore, ["list"]),
   },
   methods: {
+    // to get all list
     getAllList() {
       if (!localStorage.getItem("list")) {
         axios
@@ -75,6 +94,8 @@ export default {
         this.activities = this.list;
         this.isLoading = false;
       }
+
+      this.totalActivities = this.activities.length;
     },
 
     // To remove an activity from the list
@@ -134,6 +155,8 @@ export default {
     // To save list data in localstorage to keep the state
     saveData() {
       localStorage.setItem("list", JSON.stringify(this.list));
+      const list = JSON.parse(localStorage.getItem("list"));
+      this.totalActivities = list.length;
     },
   },
   created() {
