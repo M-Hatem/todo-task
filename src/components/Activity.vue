@@ -5,7 +5,7 @@
     :class="{ 'activity-done': activity.completed }"
     @click.prevent="activity.completed = !activity.completed"
   >
-    <span v-if="!editMode">{{ activity.title }}</span>
+    <span v-if="!editMode">{{ index + 1 }} - {{ activity.title }}</span>
     <input
       type="text"
       class="form-control w-100 me-3"
@@ -50,7 +50,7 @@ export default {
       editMode: false,
     };
   },
-  props: ["activity"],
+  props: ["activity", "index"],
   methods: {
     deleteActivity() {
       Swal.fire({
