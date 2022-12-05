@@ -22,6 +22,14 @@
               @refreshList="removeActivity"
               @saveData="saveData"
             />
+            <!-- Pagination -->
+            <!-- <div class="d-flex justify-content-center mt-4">
+              <Paginator
+                v-model:rows="rows"
+                :totalRecords="totalActivities"
+                :rowsPerPageOptions="[5, 15, 25]"
+              ></Paginator>
+            </div> -->
           </div>
         </div>
       </div>
@@ -38,6 +46,7 @@ import SortBox from "../../components/Sort-box.vue";
 
 import axios from "axios";
 import Swal from "sweetalert2";
+// import Paginator from "primevue/paginator";
 
 import { mapState, mapWritableState } from "pinia";
 import useUserStore from "@/stores/user";
@@ -51,11 +60,14 @@ export default {
     Spinner,
     SearchInput,
     SortBox,
+    // Paginator,
   },
   data() {
     return {
-      activities: {},
+      activities: [],
       isLoading: true,
+      // rows: 5,
+      // totalActivities: 0,
     };
   },
   computed: {
@@ -82,6 +94,8 @@ export default {
         this.activities = this.list;
         this.isLoading = false;
       }
+
+      this.totalActivities = this.activities.length;
     },
 
     // To remove an activity from the list
@@ -141,6 +155,8 @@ export default {
     // To save list data in localstorage to keep the state
     saveData() {
       localStorage.setItem("list", JSON.stringify(this.list));
+      const list = JSON.parse(localStorage.getItem("list"));
+      this.totalActivities = list.length;
     },
   },
   created() {
