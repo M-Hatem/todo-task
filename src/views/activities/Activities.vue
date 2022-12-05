@@ -4,6 +4,7 @@
       <div class="row justify-content-center">
         <div class="activities-container col-lg-8 col-12 py-4 px-5 my-5">
           <h1 class="activities-title text-center mb-5">To-Do List</h1>
+          <SearchInput @search="searchValue" />
           <AddNewActivity @addNew="addActivity" />
           <Spinner v-if="isLoading" />
           <div class="list-group" v-else>
@@ -25,6 +26,7 @@
 import Activity from "@/components/Activity.vue";
 import AddNewActivity from "@/components/Add-activity.vue";
 import Spinner from "@/components/Spinner.vue";
+import SearchInput from "../../components/Search-input.vue";
 
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -39,6 +41,7 @@ export default {
     Activity,
     AddNewActivity,
     Spinner,
+    SearchInput,
   },
   data() {
     return {
@@ -86,7 +89,6 @@ export default {
           title: "Oops...",
           text: "You must fill the latest one first",
         });
-
         return;
       }
 
@@ -98,6 +100,23 @@ export default {
       });
       this.list = this.activities;
     },
+
+    // To search for a value in list
+    searchValue(value) {
+      const list = JSON.parse(localStorage.getItem("list"));
+
+      if (!value) {
+        this.activities = list;
+        return;
+      }
+
+      this.activities = list.filter((l) =>
+        Object.values(l).toString().toLowerCase().includes(value)
+      );
+      this.link = this.activities;
+    },
+
+    // To save list data in localstorage to keep the state
     saveData() {
       localStorage.setItem("list", JSON.stringify(this.list));
     },
